@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{home/index.html}"
+>
+  <head></head>
+  <body>
+    <section layout:fragment="content" id="content">
+      <!-- Breadcrumb Area Start -->
+      <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="breadcrumb-content">
+                        <ul class="nav">
+                            <li><a th:href="@{index.html}">Home</a></li>
+                            <li>Shop</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Breadcrumb Area End-->
+        <!-- Shop Category Area End -->
+        <div class="shop-category-area mt-30px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9 order-lg-last col-md-12 order-md-first">
+                        <!-- Shop Top Area Start -->
+                        <div class="shop-top-bar d-flex">
+                            <!-- Left Side start -->
+                            <div class="shop-tab nav d-flex">
+                                <a class="active" th:href="@{#shop-1}" data-bs-toggle="tab">
+                                    <i class="fa fa-th"></i>
+                                </a>
+                                <a th:href="@{#shop-2}" data-bs-toggle="tab">
+                                    <i class="fa fa-list"></i>
+                                </a>
+                                <p class="d-flex align-items-center">Tất cả sản phẩm</p>
+                            </div>
+                            <!-- Left Side End -->
+                            <!-- Right Side Start -->
+                            <div class="select-shoing-wrap d-flex justify-content-end">
+                                <div class="shot-product d-flex align-items-center">
+                                    <p>Lựa chọn:</p>
+                                </div>
+                                  <div class="dropdown ">
+                                    <button class="btn pb-1 pt-1 btn-outline-primary border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                      Xắp sếp
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                      <li>
+                                        <a class="dropdown-item" th:href="@{#}">A to Z</a>
+                                        <a class="dropdown-item" th:href="@{#}">A to Z</a>
+                                        <a class="dropdown-item" th:href="@{#}">A to Z</a>
+                                        <a class="dropdown-item" th:href="@{#}">A to Z</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                            </div>
+                            <!-- Right Side End -->
+                        </div>
+                        <!-- Shop Top Area End -->
+
+                        <!-- Shop Bottom Area Start -->
+                        <div class="shop-bottom-area mt-35">
+                            <!-- Shop Tab Content Start -->
+                            <div class="tab-content jump">
+                                <!-- Tab One Start -->
+                                <div id="shop-1" class="tab-pane active" >
+                                    <div class="row m-0" >
+                                        <div class="mb-30px col-md-4 col-sm-6 p-0" th:each="item : ${listProductDetails}">
+                                            <div class="slider-single-item">
+                                                <!-- Single Item -->
+                                                <article class="list-product p-0 text-center">
+                                                    <div class="product-inner">
+                                                        <div class="img-block">
+                                                            <a th:href="@{'/users/view/'+${item.productDetailId}+'&memory='+${item.memoryStorage.memoryStorageId}}" class="thumbnail">
+                                                                <img class="first-img" th:src="@{'/static/images/'+${item.image}}" alt="" />
+                                                                <img class="second-img" th:src="@{'/static/images/'+${item.image}}" alt="" />
+                                                            </a>
+                                                            <div class="add-to-link">
+                                                                <ul>
+                                                                    <li>
+                                                                        <a class="quick_view" 
+                                                                        th:href="@{'/view/modal?productDetailId='+${item.productDetailId}}"
+                                                                        id="modal-detail"
+                                                                        >
+                                                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a 
+                                                                        id="buttonAdd2Wishlish"
+                                                                        th:pid="${item.productDetailId}"
+                                                                        title="Add to Wishlist"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a id="buttonAdd3Cart" th:pid="${item.productDetailId}" title="Add to compare"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <ul class="product-flag">
+                                                            <li class="new">-[[${item.discount}]]%</li>
+                                                        </ul>
+                                                        <div class="product-decs">
+                                                            <a class="inner-link" th:href="@{shop-4-column.html}"><span>[[${item.product.brand.brandName}]]</span></a>
+                                                            <h2><a th:href="@{single-product.html}" class="product-link">[[${item.product.productName}]]</a></h2>
+                                                            <div class="pricing-meta">
+                                                                <ul>
+                                                                    <li class="old-price">[[${item.unitPrice}]]đ</li>
+                                                                    <li class="current-price">[[${item.unitPrice - item.unitPrice*item.discount/100}]]đ</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="cart-btn">
+                                                            <a th:href="@{'/cart/'+${item.productDetailId}}" class="add-to-curt" title="Add to cart">Mua Ngay</a>
+                                                        </div>
+                                                    </div>
+                                                </article>
+                                                <!-- Single Item -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Tab One End -->
+                                <!-- Tab Two Start -->
+                                <div id="shop-2" class="tab-pane">
+                                    <div class="shop-list-wrap mb-30px scroll-zoom" th:each="item : ${listProductDetails}">
+                                        <div class="slider-single-item">
+                                            <div class="row list-product m-0px">
+                                                <div class="col-md-12 padding-0px product-inner">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 p-0">
+                                                            <div class="left-img">
+                                                                <div class="img-block">
+                                                                    <a th:href="@{'/users/view/'+${item.productDetailId}+'&memory='+${item.memoryStorage.memoryStorageId}}" class="thumbnail">
+                                                                        <img class="first-img" th:src="@{'/static/images/'+${item.image}}" alt="" />
+                                                                        <img class="second-img" th:src="@{'/static/images/'+${item.image}}" alt="" />
+                                                                    </a>
+                                                                    <ul class="product-flag">
+                                                                        <li class="new">-[[${item.discount}]]%</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 p-0">
+                                                            <div class="product-desc-wrap">
+                                                                <div class="product-decs">
+                                                                    <h2><a th:href="@{'/users/view/'+${item.productDetailId}+'&memory='+${item.memoryStorage.memoryStorageId}}" class="product-link">[[${item.product.productName}]]</a></h2>
+                                                                    <a class="inner-link" th:href="@{shop-4-column.html}"><span>[[${item.product.brand.brandName}]]</span></a>
+                                                                    <div class="d-block">
+                                                                      <p class="d-flex">
+                                                                        Dung lượng:
+                                                                        <span class="text-dark"> [[${item.memoryStorage.memoryStorageName}]]</span>
+                                                                      </p>
+                                                                    </div>
+                                                                    <hr style="background-color: #ccc;" class="mb-2 mt-2">
+                                                                    <div class="product-intro-info pt-1 pb-1">
+                                                                        <div class="d-block" width="100%">
+                                                                            <p >[[${item.description}]]</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="box-inner d-flex">
+                                                                    <div class="align-self-center">
+                                                                        <div class="in-stock">Số lượng còn: <span>[[${item.quantity}]]</span></div>
+                                                                        <div class="pricing-meta">
+                                                                            <ul>
+                                                                                <li class="old-price">[[${#numbers.formatDecimal(item.unitPrice, 0, 'COMMA', 0, 'POINT')}]]đ</li>
+                                                                                <li class="current-price">[[${#numbers.formatDecimal(item.unitPrice - item.unitPrice*item.discount/100, 0, 'COMMA', 0, 'POINT')}]]đ</li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div class="cart-btn">
+                                                                            <a th:href="@{'/cart/'+${item.productDetailId}}" class="add-to-curt" title="Add to cart">Mua Ngay</a>
+                                                                        </div>
+                                                                        <div class="add-to-link">
+                                                                            <ul>
+                                                                                <li>
+                                                                                    <a class="quick_view" 
+                                                                                    th:href="@{'/view/modal?productDetailId='+${item.productDetailId}}"
+                                                                                    id="modal-detail"
+                                                                                    >
+                                                                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a 
+                                                                                    id="buttonAdd2Wishlish"
+                                                                                    th:pid="${item.productDetailId}"
+                                                                                    title="Add to Wishlist"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a id="buttonAdd3Cart" th:pid="${item.productDetailId}" title="Add to compare"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Tab Two End -->
+                            </div>
+                            <!-- Shop Tab Content End -->
+                            <!--  Pagination Area Start -->
+                            <!-- <div class="pro-pagination-style text-center mtb-50px">
+                                <ul>
+                                    <li>
+                                        <a class="prev" th:href="@{#}"><i class="ion-ios-arrow-left"></i></a>
+                                    </li>
+                                    <li><a class="active" th:href="@{#}">1</a></li>
+                                    <li><a th:href="@{#}">2</a></li>
+                                    <li>
+                                        <a class="next" th:href="@{#}"><i class="ion-ios-arrow-right"></i></a>
+                                    </li>
+                                </ul>
+                            </div> -->
+                            Total Items: [[${totalItems}]] - Page [[${currentPage}]] of [[${totalPages}]]
+                            <nav aria-label="Page navigation" class="text-center mtb-50px">
+                              <ul class="pagination justify-content-center">
+                                <li class="page-item">
+                                  <a th:if="${currentPage > 1}" th:href="@{'/users/page/1'}" class="page-link" aria-label="Previous">
+                                    <span>First</span>
+                                  </a>
+                                  <span class="page-link" th:unless="${currentPage > 1}">First</span>
+                                </li>
+                                <li class="page-item">
+                                  <a class="page-link" th:if="${currentPage > 1}" th:href="@{'/users/page/' + ${currentPage - 1}}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                  </a>
+                                  <span th:unless="${currentPage > 1}" class="page-link" aria-hidden="true">&laquo;</span>
+                                </li>
+                                <li th:class="${currentPage==i?'page-item active':'page-item'}" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                                  <a class="page-link" th:if="${currentPage != i}" th:href="@{'/users/page/' + ${i}}">[[${i}]]</a>
+                                  <span class="page-link" th:unless="${currentPage != i}">[[${i}]]</span>
+                              </li>
+                                <li class="page-item">
+                                  <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/users/page/' + ${currentPage + 1}}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                  </a>
+                                  <span aria-hidden="true" class="page-link" th:unless="${currentPage < totalPages}">&raquo;</span>
+                                </li>
+                                <li class="page-item">
+                                  <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/users/page/' + ${totalPages}}" aria-label="Next">
+                                    <span aria-hidden="true">Last</span>
+                                  </a>
+                                  <span class="page-link" aria-hidden="true" th:unless="${currentPage < totalPages}">Last</span>
+                                </li>
+                              </ul>
+                            </nav>
+                            <!--  Pagination Area End -->
+                        </div>
+                        <!-- Shop Bottom Area End -->
+                    </div>
+                    <!-- Sidebar Area Start -->
+                    <div class="col-lg-3 order-lg-first col-md-12 order-md-last mb-md-60px mb-lm-60px">
+                        <div class="shop-sidebar-wrap">
+                                <div class="sidebar-widget mb-30px">
+                                        <h3 class="sidebar-title"><span>Loại sản phẩm</span></h3>
+                                        <div class="card">
+                                          <div class="card-header" id="headingOne">
+                                            <a th:href="@{/users/all-product}" aria-expanded="false" aria-controls="collapseOne" class="collapsed card-header">Tất cả sản phẩm</a>
+                                          </div>
+                                      </div>
+                                        <div class="accordion" id="accordionExample" th:each="item : ${listCategorySideBar}">
+                                            <div class="card">
+                                                <div class="card-header" id="headingOne">
+                                                  <a th:href="@{'/users/list/'+${item.categoryId}}" aria-expanded="false" aria-controls="collapseOne" class="collapsed">[[${item.name}]]</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <!-- Sidebar single item -->
+                                <!-- <form id="choose" action="" method="post">
+                                  <div class="sidebar-widget-group mt-20">
+                                      <h3 class="sidebar-title m-0"><span>Phân loại theo</span></h3>
+                                      
+                                      <div class="sidebar-widget mt-30">
+                                          <h4 class="pro-sidebar-title">Bộ nhớ trong</h4>
+                                          <div class="sidebar-widget-list">
+                                              <ul>
+                                                  <li>
+                                                      <div class="sidebar-widget-list-left">
+                                                          <input type="checkbox" value="" /> <p>Doted<span>(3)</span></p>
+                                                          <span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                      </div>
+                                      <div class="sidebar-widget mt-30">
+                                          <h4 class="pro-sidebar-title">Kích cỡ màn hình</h4>
+                                          <div class="sidebar-widget-list">
+                                              <ul>
+                                                  <li>
+                                                      <div class="sidebar-widget-list-left">
+                                                          <input type="checkbox" /> <p>Cotton<span>(4)</span> </p>
+                                                          <span class="checkmark"></span>
+                                                      </div>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                      </div>
+                                      <div class="sidebar-widget mt-20">
+                                          <h4 class="pro-sidebar-title">Giá</h4>
+                                          <div class="price-filter mt-10">
+                                              <div class="price-slider-amount">
+                                                  <input type="text" id="amount" name="price" placeholder="Add Your Price" />
+                                              </div>
+                                              <div id="slider-range"></div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                </form> -->
+                                <div class="sidebar-widget tag mt-30px">
+                                    <div class="main-heading">
+                                        <h3 class="sidebar-title"><span>Hãng</span></h3>
+                                    </div>
+                                    <div class="sidebar-widget-tag">
+                                        <ul>
+                                            <li th:each="item : ${listBrands}">
+                                              <a th:href="@{#}">[[${item.brandName}]]</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- Sidebar single item -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+          var csrfHeaderName = "[[${_csrf.headerName}]]";
+          var csrfValue = "[[${_csrf.token}]]";
+        </script>
+        <script>
+          $(document).ready(function(){
+                                          $("#choose").on("change", "input:checkbox", function(){
+                                              $("#choose").submit();
+                                          });
+                                      });
+        </script>
+        <!-- Shop Category Area End -->
+    </section>
+  </body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+  <head> </head>
+  <body>
+    <div th:fragment="header-nav">
+      <header class="header-wrapper">
+        <!-- Header Nav Start -->
+        <div class="header-nav">
+          <div class="container">
+            <div
+              class="header-nav-wrapper d-md-flex d-sm-flex d-xl-flex d-lg-flex justify-content-between"
+            >
+              <div
+                class="header-static-nav d-flex align-items-center"
+                sec:authorize="hasAnyAuthority('ADMIN','USER')"
+              >
+                <a
+                  th:href="@{/mailto:yourname@email.com}"
+                  sec:authentication="principal.email"
+                ></a>
+              </div>
+              <div class="header-menu-nav">
+                <ul class="menu-nav d-flex align-items-center">
+                  <li sec:authorize="hasAnyAuthority('ADMIN','USER')">
+                    <div class="dropdown">
+                      <button
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        class="d-flex align-items-center"
+                      >
+                        <i
+                          class="fa fa-user me-1"
+                          aria-hidden="true"
+                          th:if="${#strings.equals(#authentication.getPrincipal().getUser().getImage(),'')}"
+                        ></i>
+                        <img
+                          th:unless="${#strings.equals(#authentication.getPrincipal().getUser().getImage(),'')}"
+                          th:src="@{'/static/images/user/'+${#authentication.getPrincipal().getUser().getImage()}}"
+                          style="width: 20px; height: 20px"
+                          alt=""
+                          class="rounded-circle me-1"
+                        />
+                        <span
+                          sec:authentication="principal.user.username"
+                        ></span>
+                      </button>
+
+                      <ul
+                        class="dropdown-menu animation slideDownIn"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        <li>
+                          <a
+                            th:href="@{/users/my-account}"
+                            sec:authentication="principal.user.username"
+                          ></a>
+                        </li>
+                        <li><a th:href="@{/checkout}">Checkout</a></li>
+                        <li>
+                          <a href="javascript: logoutForm.submit()">Sign in</a>
+                          <form
+                            name="logoutForm"
+                            th:action="@{/doLogout}"
+                            method="post"
+                            hidden
+                          >
+                            <input type="submit" value="Logout" />
+                          </form>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li sec:authorize="isAnonymous()">
+                    <a th:href="@{/users/login}">Login</a>
+                  </li>
+                  <li>
+                    <div class="dropdown">
+                      <button
+                        type="button"
+                        id="dropdownMenuButton-2"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        style="height: 20px"
+                      >
+                        USD $ <i class="ion-ios-arrow-down"></i>
+                      </button>
+
+                      <ul
+                        class="dropdown-menu animation slideDownIn"
+                        aria-labelledby="dropdownMenuButton-2"
+                      >
+                        <li><a th:href="@{#}">EUR €</a></li>
+                        <li><a th:href="@{#}">USD $</a></li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="pr-0">
+                    <div class="dropdown">
+                      <button
+                        type="button"
+                        id="dropdownMenuButton-3"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        style="height: 20px"
+                      >
+                        <img th:src="@{/static/images1/flag/1.jpg}" alt="" />
+                        English
+                        <i class="ion-ios-arrow-down"></i>
+                      </button>
+
+                      <ul
+                        class="dropdown-menu animation slideDownIn"
+                        aria-labelledby="dropdownMenuButton-3"
+                      >
+                        <li>
+                          <a th:href="@{#}"
+                            ><img
+                              th:src="@{/static/images1/flag/1.jpg}"
+                              alt=""
+                            />
+                            English</a
+                          >
+                        </li>
+                        <li>
+                          <a th:href="@{#}"
+                            ><img
+                              th:src="@{/static/images1/flag/2.jpg}"
+                              alt=""
+                            />
+                            Français</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Header Nav End -->
+        <div class="header-top bg-white ptb-30px d-lg-block d-none">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-2 d-flex">
+                <div class="logo align-self-center">
+                  <a th:href="@{/users/home}"
+                    ><img
+                      class="img-responsive"
+                      th:src="@{/static/images1/logo/logo.png}"
+                      alt="logo.jpg"
+                  /></a>
+                </div>
+              </div>
+              <div class="col-md-10 align-self-center">
+                <div class="header-right-element d-flex">
+                  <div class="search-element media-body mr-20px">
+                    <form class="d-flex" action="#">
+                      <div class="search-category-header">
+                        <i class="fa fa-chevron-down"></i>
+                        <select>
+                          <option value="0">All categories</option>
+                        </select>
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Enter your search key ... "
+                      />
+                      <button>Search</button>
+                    </form>
+                  </div>
+                  <!--Cart info Start -->
+                  <div class="header-tools d-flex">
+                    <div class="cart-info d-flex align-self-center">
+                      <a
+                        th:href="@{#offcanvas-wishlist}"
+                        class="heart offcanvas-toggle"
+                        ><i class="far fa-heart"></i>
+                        <p
+                          class="quantity-wishlish"
+                          value=""
+                          sec:authorize="hasAnyAuthority('ADMIN','USER')"
+                        >
+                          0
+                        </p>
+                        <span>Wishlist</span></a
+                      >
+                      <a
+                        th:href="@{#offcanvas-cart}"
+                        class="bag offcanvas-toggle"
+                        ><i class="fas fa-shopping-cart"></i>
+                        <p
+                          class="quantity-cart-item"
+                          value=""
+                          sec:authorize="hasAnyAuthority('ADMIN','USER')"
+                        >
+                          0
+                        </p>
+                        <span>My Cart</span></a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <!--Cart info End -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Header Nav End -->
+        <div
+          class="header-menu bg-white sticky-nav d-lg-block d-none padding-0px"
+        >
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-3">
+                <div class="header-menu-vertical">
+                  <div class="menu-title-header">
+                    <i class="fa fa-list" aria-hidden="true"></i>
+                    <h4>Danh mục</h4>
+                    <i class="fa fa-chevron-down"></i>
+                  </div>
+                  <ul class="menu-content">
+                    <li
+                      class="menu-item"
+                      th:each="item : ${listCategorySideBar}"
+                    >
+                      <a th:href="@{'/users/list/'+${item.categoryId}}"
+                        >[[${item.name}]]</a
+                      >
+                    </li>
+                  </ul>
+                  <!-- menu content -->
+                </div>
+                <!-- header menu vertical -->
+              </div>
+              <div class="col-lg-9">
+                <div class="header-horizontal-menu">
+                  <ul class="menu-content">
+                    <li class="active menu-dropdown">
+                      <a th:href="@{/users/home}">Trang chủ</a>
+                    </li>
+                    <li
+                      class="active menu-dropdown"
+                      sec:authorize="hasAnyAuthority('ADMIN','EDITOR')"
+                    >
+                      <a th:href="@{/admin/products/}">Trang chủ Admin</a>
+                    </li>
+                    <li class="menu-dropdown">
+                      <a th:href="@{/users/all-product}">Shop</a>
+                    </li>
+                    <!-- <li class="menu-dropdown">
+                      <a th:href="@{#}"
+                        >Pages <i class="fas fa-caret-down"></i
+                      ></a>
+                      <ul class="main-sub-menu">
+                        <li><a th:href="@{/about.html}">About Page</a></li>
+                        <li><a th:href="@{/cart.html}">Cart Page</a></li>
+                        <li>
+                          <a th:href="@{/checkout.html}">Checkout Page</a>
+                        </li>
+                        <li><a th:href="@{/compare.html}">Compare Page</a></li>
+                        <li>
+                          <a th:href="@{/login.html}">Login & Register Page</a>
+                        </li>
+                        <li>
+                          <a th:href="@{/my-account.html}">Account Page</a>
+                        </li>
+                        <li>
+                          <a th:href="@{/empty-cart.html}">Empty Cart Page</a>
+                        </li>
+                        <li><a th:href="@{/404.html}">404 Page</a></li>
+                        <li>
+                          <a th:href="@{/wishlist.html}">Wishlist Page</a>
+                        </li>
+                      </ul>
+                    </li> -->
+                    <li class="menu-dropdown">
+                      <a th:href="@{#}">Blog</a>
+                    </li>
+                    <li class="menu-dropdown">
+                      <a th:href="@{/list_order}">Lịch sử đơn hàng</a>
+                    </li>
+                    <li><a th:href="@{/users/contact}">Liên hệ</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- row -->
+          </div>
+          <!-- container -->
+        </div>
+        <!-- header menu -->
+      </header>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{home/index.html}"
+>
+  <head></head>
+
+  <body>
+    <section layout:fragment="content" id="content">
+      <!-- Breadcrumb Area Start -->
+      <div class="breadcrumb-area">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="breadcrumb-content">
+                <ul class="nav">
+                  <li><a th:href="@{/users/home}">Home</a></li>
+                  <li>Contact Success</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Breadcrumb Area End-->
+
+      <!-- 404 Area start-->
+      <div class="blank-page-area mtb-50px">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="blank-content-header">
+                <h1>Contact Success!</h1>
+              </div>
+              <div class="page-not-found text-center">
+                <h4>Contact Us</h4>
+                <p>
+                  Thank you for contacting us. We'll get back to you shortly!
+                </p>
+                <a th:href="@{/users/home}">Go To Home</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 404 Area End-->
+    </section>
+  </body>
+</html>

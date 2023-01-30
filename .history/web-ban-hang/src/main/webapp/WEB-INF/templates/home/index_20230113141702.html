@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+  <!-- Mirrored from htmldemo.net/abelo/abelo/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Nov 2022 01:57:14 GMT -->
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Abelo – Electronics eCommerce HTML Template</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Favicon -->
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      th:href="@{/static/images1/favicon/favicon.png}"
+    />
+    <!-- Google Fonts -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Muli:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      type="text/css"
+      media="all"
+    />
+
+    <!-- CSS
+  ============================================ -->
+
+    <!-- Vendor CSS (Bootstrap & Icon Font) -->
+    <link rel="stylesheet" th:href="@{/static/css1/vendor/bootstrap.min.css}" />
+    <!-- <link rel="stylesheet" th:href="@{/css1/vendor/ionicons.min.css}" /> -->
+    <!-- <link rel="stylesheet" th:href="@{/css1/vendor/linearicon.css}" /> -->
+    <!-- <link rel="stylesheet" th:href="@{/css1/vendor/font-awesome.min.css}" /> -->
+    <link rel="stylesheet" tH:href="@{/static/css1/index.css}" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+      integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ"
+      crossorigin="anonymous"
+    />
+
+    <!-- Plugins CSS (All Plugins Files) -->
+    <link rel="stylesheet" th:href="@{/static/css1/plugins/animate.css}" />
+    <link
+      rel="stylesheet"
+      th:href="@{/static/css1/plugins/jquery-ui.min.css}"
+    />
+    <link rel="stylesheet" th:href="@{/static/css1/plugins/slick.css}" />
+
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" th:href="@{/static/css1/style.css}" />
+  </head>
+
+  <body>
+    <!-- Header Section Start From Here -->
+    <div th:replace="home/fragments/header-nav::header-nav"></div>
+    <!-- Header Section End Here -->
+
+    <div layout:fragment="content"></div>
+
+    <div th:replace="home/fragments/footer::footer"></div>
+    <!-- Mobile Header Section End -->
+    <!-- OffCanvas Wishlist Start -->
+    <div id="offcanvas-wishlist" class="offcanvas offcanvas-wishlist">
+      <div class="inner">
+        <div class="head">
+          <span class="title">Wishlist</span>
+          <button class="offcanvas-close">×</button>
+        </div>
+        <div class="body customScroll">
+          <ul
+            class="minicart-product-list"
+            sec:authorize="hasAnyAuthority('ADMIN','USER')"
+          >
+            <li th:each="item : ${listWishlishByUser}">
+              <a th:href="@{/single-product.html}" class="image"
+                ><img
+                  th:src="@{'/static/images/'+${item.productDetail.image}}"
+                  alt="Cart product Image"
+              /></a>
+              <div class="content">
+                <a th:href="@{/single-product.html}" class="title"
+                  >[[${item.productDetail.productDetailName}]]</a
+                >
+                <span class="quantity-price"
+                  >1 x
+                  <span class="amount">
+                    [[${#numbers.formatDecimal(item.productDetail.unitPrice -
+                    item.productDetail.unitPrice*item.productDetail.discount/100,
+                    0, 'COMMA', 0, 'POINT')}]]đ</span
+                  ></span
+                >
+                <!-- <a th:href="@{#}" class="remove">×</a> -->
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="foot">
+          <div class="buttons">
+            <a
+              th:href="@{/wishlist}"
+              class="btn btn-dark btn-hover-primary mt-30px"
+              >view wishlist</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- OffCanvas Wishlist End -->
+
+    <!-- OffCanvas Cart Start -->
+    <div class="offcanvas-overlay"></div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">x</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6 col-sm-12 col-xs-12 mb-lm-100px mb-sm-30px">
+                <div class="quickview-wrapper">
+                  <!-- slider -->
+                  <div class="gallery-top">
+                    <div class="single-slide">
+                      <img
+                        class="img-responsive m-auto img-pro-detail"
+                        th:src="@{/static/images1/product-image/8.jpg}"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                  <!-- <div class="gallery-thumbs">
+                    <div class="single-slide">
+                      <img
+                        class="img-responsive m-auto img-pro-detail"
+                        th:src="@{/static/images1/product-image/8.jpg}"
+                        alt=""
+                      />
+                    </div>
+                  </div> -->
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="product-details-content quickview-content">
+                  <h2 class="product-detail-name">Originals Kaval Windbr</h2>
+                  <p class="reference">
+                    Thương hiệu:<span class="brand-prd"> demo_17</span>
+                  </p>
+                  <div class="pro-details-rating-wrap">
+                    <div class="rating-product">
+                      <i class="fa fa-star" aria-hidden="true"></i>
+                      <i class="fa fa-star" aria-hidden="true"></i>
+                      <i class="fa fa-star" aria-hidden="true"></i>
+                      <i class="fa fa-star" aria-hidden="true"></i>
+                      <i class="fa fa-star" aria-hidden="true"></i>
+                    </div>
+                    <span class="read-review"
+                      ><a class="reviews" th:href="@{#}"
+                        >Read reviews (1)</a
+                      ></span
+                    >
+                  </div>
+                  <div class="pricing-meta">
+                    <ul>
+                      <li class="old-price not-cut">€18.90</li>
+                      <li class="cuttent-price">€18.90</li>
+                      <li class="discount-flag">Sale %</li>
+                    </ul>
+                  </div>
+                  <p class="quickview-para">
+                    Lorem ipsum dolor sit amet, consectetur adipisic elit eiusm
+                    tempor incidid ut labore et dolore magna aliqua. Ut enim ad
+                    minim venialo quis nostrud exercitation ullamco
+                  </p>
+                  <div class="pro-details-size-color">
+                    <div class="me-3 mb-1">
+                      <span class="text-dark">Bộ nhớ trong: </span
+                      ><span class="ms-1 text-muted memory-storage">Xanh</span>
+                    </div>
+                    <div class="me-3 mb-1">
+                      <span class="text-dark">Ram: </span
+                      ><span class="ms-1 text-muted ram">Xanh</span>
+                    </div>
+                    <div>
+                      <span class="text-dark">Color: </span
+                      ><span class="ms-1 text-muted color-detail">Xanh</span>
+                    </div>
+                  </div>
+                  <div class="pro-details-quality">
+                    <div class="cart-plus-minus">
+                      <input
+                        class="cart-plus-minus-box set-quantity"
+                        type="text"
+                        name="qtybutton"
+                        value="1"
+                        id=""
+                      />
+                    </div>
+                    <div class="pro-details-cart btn-hover">
+                      <a
+                        class="add-to-cart link-add-to-cart"
+                        id="buttonAdd2CartByQuantity"
+                        pid=""
+                      >
+                        + Thêm vào giỏ hàng</a
+                      >
+                    </div>
+                  </div>
+                  <div class="pro-details-wish-com">
+                    <div class="pro-details-wishlist">
+                      <a id="buttonAdd3Wishlish" pid="" class="add-wishlish"
+                        ><i class="fa fa-heart" aria-hidden="true"></i>Yêu
+                        thích</a
+                      >
+                    </div>
+                    <!-- <div class="pro-details-compare">
+                      <a th:href="@{/compare.html}"
+                        ><i class="ion-ios-shuffle-strong"></i>Add to compare</a
+                      >
+                    </div> -->
+                  </div>
+                  <!-- <div class="pro-details-social-info">
+                    <span>Share</span>
+                    <div class="social-info">
+                      <ul>
+                        <li>
+                          <a th:href="@{#}"
+                            ><i class="ion-social-facebook"></i
+                          ></a>
+                        </li>
+                        <li>
+                          <a th:href="@{#}"
+                            ><i class="ion-social-twitter"></i
+                          ></a>
+                        </li>
+                        <li>
+                          <a th:href="@{#}"
+                            ><i class="ion-social-google"></i
+                          ></a>
+                        </li>
+                        <li>
+                          <a th:href="@{#}"
+                            ><i class="ion-social-instagram"></i
+                          ></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal end -->
+
+    <div id="offcanvas-cart" class="offcanvas offcanvas-cart">
+      <div class="inner">
+        <div class="head">
+          <span class="title">Cart</span>
+          <button class="offcanvas-close">×</button>
+        </div>
+        <div class="body customScroll">
+          <ul class="minicart-product-list">
+            <li
+              th:each="item : ${listOrderByUser}"
+              sec:authorize="hasAnyAuthority('ADMIN','USER')"
+            >
+              <a href="single-product.html" class="image"
+                ><img
+                  th:src="@{'/static/images/'+${item.productDetail.image}}"
+                  alt="Cart product Image"
+              /></a>
+              <div class="content">
+                <a href="single-product.html" class="title"
+                  >[[${item.productDetail.productDetailName}]]</a
+                >
+                <span class="quantity-price"
+                  >[[${item.quantity}]] x
+                  <span class="amount"
+                    >[[${#numbers.formatDecimal(item.productDetail.unitPrice -
+                    item.productDetail.unitPrice*item.productDetail.discount/100,
+                    0, 'COMMA', 0, 'POINT')}]]đ</span
+                  ></span
+                >
+                <!-- <a href="#" class="remove">×</a> -->
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="foot">
+          <div
+            class="sub-total"
+            sec:authorize="hasAnyAuthority('ADMIN','USER')"
+          >
+            <strong>Subtotal :</strong>
+            <span class="amount"
+              >$[[${amount}]]
+              [[${#numbers.formatDecimal(item.productDetail.unitPrice -
+              item.productDetail.unitPrice*item.productDetail.discount/100, 0,
+              'COMMA', 0, 'POINT')}]]đ
+            </span>
+          </div>
+          <div class="buttons">
+            <a th:href="@{/cart}" class="btn btn-dark btn-hover-primary mb-30px"
+              >view cart</a
+            >
+            <a th:href="@{/checkout}" class="btn btn-outline-dark current-btn"
+              >checkout</a
+            >
+          </div>
+          <p class="minicart-message">Free Shipping on All Orders Over $100!</p>
+        </div>
+      </div>
+    </div>
+    <!-- JS
+============================================ -->
+    <script type="text/javascript">
+      var csrfHeaderName = "[[${_csrf.headerName}]]";
+      var csrfValue = "[[${_csrf.token}]]";
+    </script>
+
+    <!-- Vendors JS -->
+    <script th:src="@{/static/js1/vendor/jquery-3.6.0.min.js}"></script>
+    <script th:src="@{/static/js1/vendor/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/static/js1/vendor/jquery-migrate-3.3.2.min.js}"></script>
+    <script th:src="@{/static/js1/vendor/modernizr-3.11.2.min.js}"></script>
+
+    <!-- Plugins JS -->
+    <script th:src="@{/static/js1/plugins/jquery-ui.min.js}"></script>
+    <script th:src="@{/static/js1/plugins/slick.js}"></script>
+    <script th:src="@{/static/js1/plugins/countdown.js}"></script>
+    <script th:src="@{/static/js1/plugins/scrollup.js}"></script>
+    <script th:src="@{/static/js1/plugins/elevateZoom.js}"></script>
+
+    <!-- Main Activation JS -->
+    <script th:src="@{/static/js1/quantity_item_cart_and_wishlish.js}"></script>
+    <script th:src="@{/static/js1/main.js}"></script>
+    <script th:src="@{/static/js1/add_to_cart.js}"></script>
+    <script th:src="@{/static/js1/modal.js}"></script>
+    <script th:src="@{/static/js1/add_to_cart_by_quantity.js}"></script>
+    <script th:src="@{/static/js1/remove_to_wishlish.js}"></script>
+    <script th:src="@{/static/js1/add_to_wishlish.js}"></script>
+    <script th:src="@{/static/js1/add_to_wishlish_detail.js}"></script>
+    <script th:src="@{/static/js1/add_to_cart_home.js}"></script>
+    <script th:src="@{/static/js1/shopping_cart.js}"></script>
+  </body>
+
+  <!-- Mirrored from htmldemo.net/abelo/abelo/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 Nov 2022 01:57:54 GMT -->
+</html>

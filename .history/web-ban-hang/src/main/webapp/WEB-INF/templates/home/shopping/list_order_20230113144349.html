@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{home/index.html}"
+>
+  <head></head>
+
+  <body>
+    <section layout:fragment="content" id="content">
+      <!-- Breadcrumb Area Start -->
+      <div class="breadcrumb-area">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="breadcrumb-content">
+                <ul class="nav">
+                  <li><a href="index.html">Home</a></li>
+                  <li>List Orders</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-2 mb-2">
+        <div class="d-flex justify-content-center">
+          <form th:action="@{/search/order}" method="get">
+            <div
+              style="
+                height: 40px;
+                width: 300px;
+                position: relative;
+                margin: 10px;
+                border: 1px solid;
+                border-radius: 20px;
+              "
+              class="d-flex align-item-center text-primary"
+            >
+              <input
+                type="text"
+                placeholder="Mã đơn..."
+                name="orderCode"
+                class="ms-3"
+              />
+              <button
+                style="
+                  position: absolute;
+                  right: 0;
+                  top: 3px;
+                  transform: translateY(50%);
+                "
+                class="me-3"
+              >
+                <i class="fa fa-search text-primary" aria-hidden="true"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="col d-flex justify-content-center align-item-center">
+          <div>
+            <table class="table table-responsive table-borderless table-hover">
+              <thead
+                class="thead-inverse"
+                style="background-color: #266cfb; color: #fff"
+              >
+                <tr>
+                  <th class="text-center">STT</th>
+                  <th class="text-center">Mã đơn hàng</th>
+                  <th class="text-center">Người đặt hàng</th>
+                  <th class="text-center">Ngày đặt hàng</th>
+                  <th class="text-center">Địa chỉ</th>
+                  <th class="text-center">Giá trị đơn hàng</th>
+                  <th class="text-center">Trạng thái</th>
+                  <th class="text-center">Ngày nhận hàng</th>
+                  <th class="text-center"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="item, status : ${listOrders}">
+                  <td scope="row" class="text-center">
+                    <span style="line-height: 36px">[[${status.count}]]</span>
+                  </td>
+                  <td style="line-height: 36px">
+                    <span>[[${item.orderCode}]]</span>
+                  </td>
+                  <td class="text-center">
+                    <span style="line-height: 36px"
+                      >[[${item.lastName}]] [[${item.firstName}]]</span
+                    >
+                  </td>
+                  <td class="text-center">
+                    <span
+                      style="line-height: 36px"
+                      th:text="${#dates.format(order.orderDate, 'dd-MM-yyyy HH:mm')}"
+                    ></span>
+                  </td>
+                  <td class="text-center">
+                    <span style="line-height: 36px"
+                      >[[${item.commune}]] - [[${item.district}]] -
+                      [[${item.city}]]</span
+                    >
+                  </td>
+                  <td class="text-center">
+                    <span style="line-height: 36px">$[[${item.amount}]]</span>
+                  </td>
+                  <td class="text-center">
+                    <span style="line-height: 36px">Đang giao</span>
+                  </td>
+                  <td class="text-center">
+                    <span style="line-height: 36px">10/10/2023</span>
+                  </td>
+                  <td class="text-center">
+                    <a
+                      name=""
+                      id=""
+                      class="btn btn-outline-primary"
+                      th:href="@{'/bill/'+${item.orderId}}"
+                      role="button"
+                      >Chi tiết</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            Total Items: [[${totalItems}]] - Page [[${currentPage}]] of
+            [[${totalPages}]]
+            <nav aria-label="Page navigation" class="mt-2">
+              <ul class="pagination justify-content-center">
+                <li class="page-item">
+                  <a
+                    th:if="${currentPage > 1}"
+                    th:href="@{'/page/order/1'}"
+                    class="page-link"
+                    aria-label="Previous"
+                  >
+                    <span>First</span>
+                  </a>
+                  <span class="page-link" th:unless="${currentPage > 1}"
+                    >First</span
+                  >
+                </li>
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    th:if="${currentPage > 1}"
+                    th:href="@{'/page/order/' + ${currentPage - 1}}"
+                    aria-label="Previous"
+                  >
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                  <span
+                    th:unless="${currentPage > 1}"
+                    class="page-link"
+                    aria-hidden="true"
+                    >&laquo;</span
+                  >
+                </li>
+                <li
+                  th:class="${currentPage==i?'page-item active':'page-item'}"
+                  th:each="i: ${#numbers.sequence(1, totalPages)}"
+                >
+                  <a
+                    class="page-link"
+                    th:if="${currentPage != i}"
+                    th:href="@{'/page/order/' + ${i}}"
+                    >[[${i}]]</a
+                  >
+                  <span class="page-link" th:unless="${currentPage != i}"
+                    >[[${i}]]</span
+                  >
+                </li>
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    th:if="${currentPage < totalPages}"
+                    th:href="@{'/page/order/' + ${currentPage + 1}}"
+                    aria-label="Next"
+                  >
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                  <span
+                    aria-hidden="true"
+                    class="page-link"
+                    th:unless="${currentPage < totalPages}"
+                    >&raquo;</span
+                  >
+                </li>
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    th:if="${currentPage < totalPages}"
+                    th:href="@{'/page/order/' + ${totalPages}}"
+                    aria-label="Next"
+                  >
+                    <span aria-hidden="true">Last</span>
+                  </a>
+                  <span
+                    class="page-link"
+                    aria-hidden="true"
+                    th:unless="${currentPage < totalPages}"
+                    >Last</span
+                  >
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
