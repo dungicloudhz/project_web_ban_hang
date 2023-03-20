@@ -112,6 +112,8 @@ public class ProductDetailController {
 
         if (imageFile.isEmpty()){
             ProductDetail entity = productDetailService.findById(dto.getProductDetailId()).get();
+            dto.setImage(entity.getImage());
+            BeanUtils.copyProperties(dto, entity);
             Product product = productService.findById(dto.getProductId()).get();
             entity.setProduct(product);
             Color color = new Color();
@@ -510,20 +512,35 @@ public class ProductDetailController {
             model.addAttribute("totalItems",totalItems);
             model.addAttribute("totalPages",totalPages);
             model.addAttribute("currentPage",1);
-            BrandDto dto = new BrandDto();
-            dto.setIsEdit(false);
             model.addAttribute("productDetailName",productDetailName);
             List<ProductDetail> listProductDetails = page.getContent();
-            model.addAttribute("brand", dto);
             model.addAttribute("listProductDetails", listProductDetails);
             return "admin/productDetails/list-product-detail";
         }
-        BrandDto dto = new BrandDto();
-        dto.setIsEdit(false);
         model.addAttribute("productDetailName",productDetailName);
         List<ProductDetail> listProductDetails = page.getContent();
-        model.addAttribute("brand", dto);
         model.addAttribute("listProductDetails", listProductDetails);
-        return "admin/productDetails/list-product-detail-page";
+        return "admin/productDetails/list-product-detail-page-search";
+    }
+
+    @RequestMapping("/page-search/{pageNumber}&productDetailName={productDetailName}")
+    public String pageProductDetailName(Model model,
+                                        @PathVariable(name = "pageNumber") int currentPage,
+                                        @PathVariable(name = "productDetailName") String productDetailName) {
+
+        Sort sort = Sort.by("productDetailName").ascending();
+        Pageable pageable = PageRequest.of(currentPage - 1, 5, sort);
+        Page<ProductDetail> page = productDetailService.findByProductDetailNameContaining(productDetailName, pageable);
+        long totalItems = page.getTotalElements();
+        int totalPages = page.getTotalPages();
+
+        List<ProductDetail> listProductDetails = page.getContent();
+        model.addAttribute("productDetailName", productDetailName);
+        model.addAttribute("listProductDetails", listProductDetails);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", currentPage);
+
+        return "admin/productDetails/list-product-detail-page-search";
     }
 }

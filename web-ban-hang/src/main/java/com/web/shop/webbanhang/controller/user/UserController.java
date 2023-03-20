@@ -3,6 +3,7 @@ package com.web.shop.webbanhang.controller.user;
 import cn.apiclub.captcha.Captcha;
 import com.web.shop.webbanhang.captcha.CaptchaGenerator;
 import com.web.shop.webbanhang.entity.*;
+import com.web.shop.webbanhang.model.BrandDto;
 import com.web.shop.webbanhang.model.UserDetailDto;
 import com.web.shop.webbanhang.model.UserDto;
 import com.web.shop.webbanhang.security.MyUserDetails;
@@ -26,6 +27,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -445,6 +447,58 @@ public class UserController {
         user.setPassword(passEncode);
         userService.save(user);
         return "redirect:/users/my-account";
+    }
+
+    @GetMapping("/search-product")
+    public String search(ModelMap model,@RequestParam(value = "productDetailName",required = false)String productDetailName){
+        Page<ProductDetail> page = null;
+        if(StringUtils.hasText(productDetailName)) {
+            int pageNumber = 1;
+            Sort sort = Sort.by("productDetailName").ascending();
+            Pageable pageable = PageRequest.of(pageNumber - 1,9,sort);
+            page = productDetailService.findByProductDetailNameContaining(productDetailName,pageable);
+            long totalItems = page.getTotalElements();
+            int totalPages = page.getTotalPages();
+            model.addAttribute("productDetailName",productDetailName);
+            model.addAttribute("totalItems",totalItems);
+            model.addAttribute("totalPages",totalPages);
+            model.addAttribute("currentPage",1);
+        } else {
+            page = productDetailService.findAll(1);
+            long totalItems = page.getTotalElements();
+            int totalPages = page.getTotalPages();
+            model.addAttribute("totalItems",totalItems);
+            model.addAttribute("totalPages",totalPages);
+            model.addAttribute("currentPage",1);
+            model.addAttribute("productDetailName",productDetailName);
+            List<ProductDetail> listProductDetails = page.getContent();
+            model.addAttribute("listProductDetails", listProductDetails);
+            return "home/user/list-product-side-bar";
+        }
+        List<ProductDetail> listProductDetails = page.getContent();
+        model.addAttribute("listProductDetails", listProductDetails);
+         return "home/user/list-product-side-bar-search";
+    }
+
+    @RequestMapping("/page-search/{pageNumber}&productDetailName={productDetailName}")
+    public String pageProductDetailName(Model model,
+                                        @PathVariable(name = "pageNumber") int currentPage,
+                                        @PathVariable(name = "productDetailName") String productDetailName) {
+
+        Sort sort = Sort.by("productDetailName").ascending();
+        Pageable pageable = PageRequest.of(currentPage-1,9,sort);
+        Page<ProductDetail> page = productDetailService.findByProductDetailNameContaining(productDetailName,pageable);
+        long totalItems = page.getTotalElements();
+        int totalPages = page.getTotalPages();
+
+        List<ProductDetail> listProductDetails = page.getContent();
+        model.addAttribute("productDetailName", productDetailName);
+        model.addAttribute("listProductDetails",listProductDetails);
+        model.addAttribute("totalItems",totalItems);
+        model.addAttribute("totalPages",totalPages);
+        model.addAttribute("currentPage",currentPage);
+
+        return "home/user/list-product-side-bar-search";
     }
 
     @RequestMapping("blog-list-left-sidebar")
