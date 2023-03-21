@@ -129,8 +129,15 @@ public class ProductController {
             , HttpServletRequest request
             , ModelMap model) throws IOException {
         if(result.hasErrors()) {
-            Page<Product> list = productService.findAll(1);
-            model.addAttribute("listProducts",list);
+            Page<Product> page = productService.findAll(1);
+            long totalItems = page.getTotalElements();
+            int totalPages = page.getTotalPages();
+
+            List<Product> listProducts = page.getContent();
+            model.addAttribute("listProducts",listProducts);
+            model.addAttribute("totalItems",totalItems);
+            model.addAttribute("totalPages",totalPages);
+            model.addAttribute("currentPage",1);
             return "admin/products/list";
         }
         String path = request.getServletContext().getRealPath("/static/images/products");

@@ -12,9 +12,9 @@ import javax.validation.constraints.NotEmpty;
 public class CategoryDto {
 
 	private Long categoryId;
-	@NotEmpty(message = "Category name is not Empty!")
+	@NotEmpty
 	private String name;
-	@NotEmpty(message = "Slug name is not Empty!")
+	@NotEmpty
 	private String slug;
 	
 	private String description;

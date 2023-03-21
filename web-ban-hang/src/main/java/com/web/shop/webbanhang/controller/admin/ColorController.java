@@ -103,38 +103,24 @@ public class ColorController {
 
 
     @PostMapping("/saveOrUpdate")
-    public String saveOrUpdate(@Valid @ModelAttribute("color")ColorDto dto, BindingResult result, @RequestParam("imageFile") MultipartFile imageFile
-            , HttpServletRequest request
+    public String saveOrUpdate(@Valid @ModelAttribute("color")ColorDto dto, BindingResult result
             , ModelMap model) throws IOException {
         if(result.hasErrors()) {
-            Page<Color> list = colorService.findAll(1);
-            model.addAttribute("listColors",list);
+            Page<Color> page = colorService.findAll(1);
+            long totalItems = page.getTotalElements();
+            int totalPages = page.getTotalPages();
+
+            List<Color> listColors = page.getContent();
+            model.addAttribute("listColors",listColors);
+            model.addAttribute("totalItems",totalItems);
+            model.addAttribute("totalPages",totalPages);
+            model.addAttribute("currentPage",1);
             return "admin/colors/list";
         }
 
-        String path = request.getServletContext().getRealPath("/static/images/colors");
-        File f = new File(path);
-        File destination = new File(f.getAbsolutePath()+"/"+imageFile.getOriginalFilename());
-
-        if(!destination.exists()){
-            try {
-                Files.write(destination.toPath(),imageFile.getBytes(), StandardOpenOption.CREATE);
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-
-        if (imageFile.isEmpty()){
-            Color entity = colorService.findById(dto.getColorId()).get();
-            entity.setColorName(dto.getColorName());
-            entity.setColorCode(dto.getColorCode());
-            colorService.save(entity);
-        } else {
-            dto.setImage(imageFile.getOriginalFilename());
             Color entity = new Color();
             BeanUtils.copyProperties(dto, entity);
             colorService.save(entity);
-        }
 
         Page<Color> page = colorService.findAll(1);
         long totalItems = page.getTotalElements();

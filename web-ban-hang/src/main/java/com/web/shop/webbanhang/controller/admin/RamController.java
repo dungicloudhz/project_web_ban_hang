@@ -91,11 +91,18 @@ public class RamController {
     //     return "admin/rams/search-paginated";
     // }
 
-    @PostMapping("/saveOrUpdate")
+    @RequestMapping(value = "/saveOrUpdate",method = RequestMethod.POST)
     public String saveOrUpdate(@Valid @ModelAttribute("ram")RamDto dto, BindingResult result, ModelMap model){
         if(result.hasErrors()) {
-            Page<Ram> list = ramService.findAll(1);
-            model.addAttribute("listRams",list);
+            Page<Ram> page = ramService.findAll(1);
+            long totalItems = page.getTotalElements();
+            int totalPages = page.getTotalPages();
+
+            List<Ram> listRams = page.getContent();
+            model.addAttribute("listRams",listRams);
+            model.addAttribute("totalItems",totalItems);
+            model.addAttribute("totalPages",totalPages);
+            model.addAttribute("currentPage",1);
             return "admin/rams/list";
         }
         Ram entity = new Ram();

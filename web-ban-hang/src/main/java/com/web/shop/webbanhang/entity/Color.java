@@ -20,8 +20,6 @@ public class Color {
     private String colorName;
     @Column(name = "colorCode",columnDefinition = "nvarchar(10) not null")
     private String colorCode;
-    @Column(name = "image")
-    private String image;
 
     @OneToMany(mappedBy = "color")
     private Set<ProductDetail> productDetails;

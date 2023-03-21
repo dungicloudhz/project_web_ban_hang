@@ -102,14 +102,21 @@ public class BrandController {
         return "admin/brands/search-paginated";
     }
 
-    @PostMapping("/saveOrUpdate")
+    @RequestMapping(value = "/saveOrUpdate",method = RequestMethod.POST)
     public String saveOrUpdate(@Valid @ModelAttribute("brand")BrandDto dto, BindingResult result,
                                @RequestParam("imageFile") MultipartFile imageFile
             , HttpServletRequest request
             , ModelMap model) throws IOException {
         if(result.hasErrors()) {
-            Page<Brand> list = brandService.findAll(1);
-            model.addAttribute("listBrands",list);
+            Page<Brand> page = brandService.findAll(1);
+            long totalItems = page.getTotalElements();
+            int totalPages = page.getTotalPages();
+
+            List<Brand> listBrands = page.getContent();
+            model.addAttribute("listBrands",listBrands);
+            model.addAttribute("totalItems",totalItems);
+            model.addAttribute("totalPages",totalPages);
+            model.addAttribute("currentPage",1);
             return "admin/brands/list";
         }
 

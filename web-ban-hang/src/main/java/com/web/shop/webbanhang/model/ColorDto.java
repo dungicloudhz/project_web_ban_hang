@@ -11,11 +11,11 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 public class ColorDto {
     private Long colorId;
+
     @NotEmpty
     private String colorName;
-    @NotEmpty
+
     private String colorCode;
 
-    private String image;
     private Boolean isEdit = false;
 }

@@ -97,8 +97,15 @@ public class MemoryStorageController {
     @PostMapping("/saveOrUpdate")
     public String saveOrUpdate(@Valid @ModelAttribute("memoryStorage")MemoryStorageDto dto, BindingResult result, ModelMap model){
         if(result.hasErrors()) {
-            Page<MemoryStorage> list = memoryStorageService.findAll(1);
-            model.addAttribute("listMemoryStorages",list);
+            Page<MemoryStorage> page = memoryStorageService.findAll(1);
+            long totalItems = page.getTotalElements();
+            int totalPages = page.getTotalPages();
+
+            List<MemoryStorage> listMemoryStorages = page.getContent();
+            model.addAttribute("listMemoryStorages",listMemoryStorages);
+            model.addAttribute("totalItems",totalItems);
+            model.addAttribute("totalPages",totalPages);
+            model.addAttribute("currentPage",1);
             return "admin/memoryStorages/list";
         }
         MemoryStorage entity = new MemoryStorage();

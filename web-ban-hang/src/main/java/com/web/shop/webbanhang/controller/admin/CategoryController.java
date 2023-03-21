@@ -95,8 +95,16 @@ public class CategoryController {
     @PostMapping("/saveOrUpdate")
     public String saveOrUpdate(@Valid @ModelAttribute("category")CategoryDto dto, BindingResult result, ModelMap model){
         if(result.hasErrors()) {
-            Page<Category> list = categoryService.findAll(1);
-            model.addAttribute("listCategories",list);
+            model.addAttribute("category", dto);
+            Page<Category> page = categoryService.findAll(1);
+            long totalItems = page.getTotalElements();
+            int totalPages = page.getTotalPages();
+
+            List<Category> listCategories = page.getContent();
+            model.addAttribute("listCategories",listCategories);
+            model.addAttribute("totalItems",totalItems);
+            model.addAttribute("totalPages",totalPages);
+            model.addAttribute("currentPage",1);
             return "admin/categories/list";
         }
         Category entity = new Category();

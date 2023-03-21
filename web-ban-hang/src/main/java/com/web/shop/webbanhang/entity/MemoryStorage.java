@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Data
@@ -19,6 +20,7 @@ public class MemoryStorage {
     private Long memoryStorageId;
 
     @Column(name = "memoryStorageName")
+    @NotEmpty
     private Long memoryStorageName;
 
     @OneToMany(mappedBy = "memoryStorage")

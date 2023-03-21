@@ -1,12 +1,11 @@
 package com.web.shop.webbanhang.model;
 
-import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 @Data
@@ -15,11 +14,14 @@ import javax.validation.constraints.NotEmpty;
 public class ProductDto {
 
 	private Long productId;
+
 	@NotEmpty
+	@Min(8)
 	private String productName;
 
 	private String image;
 
+	@NotEmpty
 	private String description;
 
 	private Boolean status;

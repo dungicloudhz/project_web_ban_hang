@@ -3,11 +3,10 @@ package com.web.shop.webbanhang.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,32 +21,45 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+
     @Column(name = "username")
+    @NotEmpty
+    @Length(min = 8)
     private String username;
 
+    @NotEmpty
     @Column(name = "firstName")
     private String firstName;
+
     @Column(name = "lastName")
+    @NotEmpty
     private String lastName;
 
     @Column(name = "phone")
+    @NotEmpty
     private String phone;
 
     @Column(name = "city")
+    @NotEmpty
     private String city;
 
     @Column(name = "district")
+    @NotEmpty
     private String district;
 
     @Column(name = "commune")
+    @NotEmpty
     private String commune;
 
     @Column(name = "image")
     private String image;
 
     @Column(name = "email")
+    @NotEmpty(message = "Vui lòng nhập email.")
+    @Email(message = "Vui lòng nhập đúng định dạng email.")
     private String email;
     @Column(name = "password")
+    @NotEmpty
     private String password;
     @Column(name = "enabled")
     private Boolean enabled;

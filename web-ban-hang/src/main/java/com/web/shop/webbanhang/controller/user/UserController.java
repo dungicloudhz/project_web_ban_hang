@@ -217,7 +217,6 @@ public class UserController {
             captchaSettings.setRealCaptcha(CaptchaGenerator.encodeCaptchatoBinary(captcha));
             model.addAttribute("noneUsername","Tài khoản không được chứa khoảng trống và độ dài từ 8 kí tự trở lên.");
             model.addAttribute("user",captchaSettings);
-            return "home/user/register";
         }
 
         User user = userService.findByEmail(captchaSettings.getEmail());
@@ -241,7 +240,6 @@ public class UserController {
             captchaSettings.setUsername("");
             model.addAttribute("noneUsername","Tài khoản đã tồn tại.");
             model.addAttribute("user",captchaSettings);
-            return "home/user/register";
         }
 
         if(captchaSettings.getCaptcha().equals(captchaSettings.getHiddenCaptcha())){

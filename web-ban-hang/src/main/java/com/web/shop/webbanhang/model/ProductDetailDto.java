@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 @Data
@@ -17,10 +18,15 @@ public class ProductDetailDto {
 
     private Long productDetailId;
     private String productDetailName;
+
+    @NotNull
     private Integer quantity;
+    @NotNull
     private Float unitPrice;
     private String image;
+    @NotEmpty
     private String description;
+    @NotNull
     private Long discount;
     private Long memoryStorageName;
     private Float width;
