@@ -20,8 +20,7 @@ public class MemoryStorage {
     private Long memoryStorageId;
 
     @Column(name = "memoryStorageName")
-    @NotEmpty
-    private Long memoryStorageName;
+    private String memoryStorageName;
 
     @OneToMany(mappedBy = "memoryStorage")
     private Set<ProductDetail> productDetails;

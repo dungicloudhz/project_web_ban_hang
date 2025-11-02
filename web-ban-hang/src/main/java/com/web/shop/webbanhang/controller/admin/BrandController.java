@@ -132,13 +132,13 @@ public class BrandController {
             }
         }
         if (imageFile.isEmpty()){
-            Brand entity = brandService.findById(dto.getBrandId()).get();
+            Brand entity = dto.getBrandId() != null ? brandService.findById(dto.getBrandId()).get() : new Brand();
             entity.setBrandName(dto.getBrandName());
             entity.setDescription(dto.getDescription());
             brandService.save(entity);
         } else {
             dto.setImage(imageFile.getOriginalFilename());
-            Brand entity = new Brand();
+            Brand entity = dto.getBrandId() != null ? brandService.findById(dto.getBrandId()).get() : new Brand();
             BeanUtils.copyProperties(dto, entity);
             brandService.save(entity);
         }

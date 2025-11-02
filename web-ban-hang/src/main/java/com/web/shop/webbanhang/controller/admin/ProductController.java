@@ -153,7 +153,7 @@ public class ProductController {
         }
 
         if (imageFile.isEmpty()){
-            Product entity = productService.findById(dto.getProductId()).get();
+            Product entity = dto.getProductId() != null ? productService.findById(dto.getProductId()).get() : new Product();
             entity.setProductName(dto.getProductName());
             entity.setDescription(dto.getDescription());
             entity.setStatus(dto.getStatus());
@@ -166,7 +166,7 @@ public class ProductController {
             productService.save(entity);
         } else {
             dto.setImage(imageFile.getOriginalFilename());
-            Product entity = new Product();
+            Product entity = dto.getProductId() != null ? productService.findById(dto.getProductId()).get() : new Product();
             BeanUtils.copyProperties(dto, entity);
             Category category = new Category();
             category.setCategoryId(dto.getCategoryId());

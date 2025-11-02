@@ -18,14 +18,14 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
-    @Column(name = "productName",columnDefinition = "nvarchar(100) not null")
+    @Column(name = "productName")
     private String productName;
-    @Column(name = "status",columnDefinition = "int")
+    @Column(name = "status")
     private Boolean status;
     @Column(length = 200)
     private String image;
 
-    @Column(name = "description",columnDefinition = "nvarchar(100) not null")
+    @Column(name = "description")
     private String description;
     @ManyToOne
     @JoinColumn(name = "categoryId")

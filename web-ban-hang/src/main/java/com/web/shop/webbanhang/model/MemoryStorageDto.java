@@ -15,7 +15,7 @@ public class MemoryStorageDto {
 
     private Long memoryStorageId;
     @NotNull
-    private Long memoryStorageName;
+    private String memoryStorageName;
 
     private Boolean isEdit = false;
 }

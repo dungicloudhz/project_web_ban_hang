@@ -27,28 +27,22 @@ public class User {
     @Length(min = 8)
     private String username;
 
-    @NotEmpty
     @Column(name = "firstName")
     private String firstName;
 
     @Column(name = "lastName")
-    @NotEmpty
     private String lastName;
 
     @Column(name = "phone")
-    @NotEmpty
     private String phone;
 
     @Column(name = "city")
-    @NotEmpty
     private String city;
 
     @Column(name = "district")
-    @NotEmpty
     private String district;
 
     @Column(name = "commune")
-    @NotEmpty
     private String commune;
 
     @Column(name = "image")

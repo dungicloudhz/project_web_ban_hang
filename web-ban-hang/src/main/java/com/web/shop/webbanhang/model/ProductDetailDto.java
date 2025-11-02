@@ -28,7 +28,7 @@ public class ProductDetailDto {
     private String description;
     @NotNull
     private Long discount;
-    private Long memoryStorageName;
+    private String memoryStorageName;
     private Float width;
     private Float height;
     private Float weight;

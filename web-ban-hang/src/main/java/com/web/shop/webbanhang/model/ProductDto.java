@@ -4,6 +4,7 @@ package com.web.shop.webbanhang.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -15,13 +16,11 @@ public class ProductDto {
 
 	private Long productId;
 
-	@NotEmpty
-	@Min(8)
+	@Length(min = 1)
 	private String productName;
 
 	private String image;
 
-	@NotEmpty
 	private String description;
 
 	private Boolean status;
