@@ -78,9 +78,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutSuccessUrl("/users/logout")
                     .permitAll()
                 .and()
-                .rememberMe()
-                .tokenRepository(persistentTokenRepository())
-                .and()
+//                .rememberMe()
+//                .tokenRepository(persistentTokenRepository())
+//                .and()
                 .csrf(csrf ->
                         csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 );

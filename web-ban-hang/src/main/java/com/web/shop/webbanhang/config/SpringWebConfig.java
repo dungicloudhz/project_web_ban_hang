@@ -48,13 +48,12 @@ public class SpringWebConfig implements WebMvcConfigurer, ApplicationContextAwar
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
-        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        resolver.setPrefix("classpath:/templates/"); // ✅ Đúng
-        resolver.setSuffix(".html");
-        resolver.setCharacterEncoding("UTF-8");
-        resolver.setTemplateMode(TemplateMode.HTML);
-        resolver.setCacheable(false);
-        return resolver;
+        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+        templateResolver.setPrefix("/WEB-INF/templates/");
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        templateResolver.setCacheable(false);
+        return templateResolver;
     }
 
     @Bean
